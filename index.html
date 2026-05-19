@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skeyy | Premium Front-End storefront</title>
+    
+    <style>
+        /* Base Token Setup */
+        :root {
+            --dark: #0b0c10;
+            --light-grey: #f4f6f9;
+            --white: #ffffff;
+            --green-ui: #00d084;
+            --pink-ui: #ff3e6c;
+            --muted: #686d76;
+            --card-radius: 16px;
+            --bento-radius: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html, body { 
+            background-color: var(--light-grey) !important; 
+            color: #1e2022 !important; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+            display: block !important; 
+            opacity: 1 !important; 
+            visibility: visible !important; 
+            width: 100%;
+        }
+
+        .layout-container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+
+        /* Announcement Layout */
+        .top-banner { background: var(--dark); color: var(--white); text-align: center; padding: 12px 10px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+        .top-banner a { color: var(--green-ui); text-decoration: none; margin-left: 6px; font-weight: 700; }
+
+        /* Nav Layout */
+        .navbar-sticky { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.06); }
+        .nav-flex { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+        .brand-frame { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-img { height: 44px; width: auto; object-fit: contain; border-radius: 6px; }
+        .brand-text { font-size: 26px; font-weight: 800; color: var(--dark); letter-spacing: -0.5px; }
+        
+        .nav-menu-links { display: flex; list-style: none; gap: 36px; }
+        .nav-menu-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 15px; transition: color 0.2s ease; }
+        .nav-menu-links a:hover { color: var(--green-ui); }
+
+        .search-pod { background: #edf1f7; padding: 10px 16px; border-radius: 30px; display: flex; align-items: center; width: 240px; }
+        .search-pod input { border: none; background: transparent; outline: none; width: 100%; font-size: 14px; margin-left: 6px; }
+
+        /* Custom Adaptive Hero Element */
+        .hero-jumbotron { margin: 24px 0 40px; position: relative; width: 100%; border-radius: var(--bento-radius); overflow: hidden; background: #2d3748; }
+        .hero-display-box { position: relative; width: 100%; height: 480px; }
+        .hero-image-fallback { width: 100%; height: 100%; object-fit: cover; }
+        .hero-dark-layer { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 60%, transparent 100%); }
+        .hero-text-aligner { position: absolute; inset: 0; display: flex; align-items: center; padding: 0 60px; z-index: 2; }
+        .hero-panel-content { max-width: 540px; color: var(--white); }
+        .hero-panel-content h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero-panel-content p { font-size: 16px; color: #cbd5e0; margin-bottom: 28px; }
+        .action-button-solid { display: inline-block; background: var(--pink-ui); color: var(--white); padding: 14px 36px; border-radius: 50px; font-weight: 700; font-size: 14px; text-decoration: none; border: none; transition: transform 0.2s ease; }
+        .action-button-solid:hover { transform: translateY(-2px); }
+
+        /* Grid Framework Layout */
+        .grid-header-title { font-size: 28px; font-weight: 800; margin-bottom: 24px; }
+        .grid-bento-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 230px; gap: 24px; margin-bottom: 48px; }
+        .grid-bento-cell { position: relative; border-radius: var(--bento-radius); overflow: hidden; background: #e2e8f0; text-decoration: none; }
+        .grid-bento-cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .grid-bento-cell:hover img { transform: scale(1.04); }
+        .grid-bento-cell.row-double { grid-row: span 2; }
+        .grid-bento-cell.col-double { grid-column: span 2; }
+        
+        .cell-gradient-shroud { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(11,12,16,0.85)); display: flex; align-items: flex-end; padding: 24px; }
+        .cell-labels { color: var(--white); }
+        .cell-labels h3 { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+        .cell-labels span { font-size: 13px; font-weight: 700; color: var(--green-ui); text-transform: uppercase; }
+
+        /* Referral Block Setup */
+        .referral-container-box { background: var(--dark); border-radius: var(--bento-radius); padding: 40px 48px; margin: 48px 0; display: flex; align-items: center; justify-content: space-between; gap: 32px; border: 1px solid rgba(255,255,255,0.05); }
+        .referral-details { color: var(--white); }
+        .referral-details h2 { font-size: 32px; font-weight: 800; margin-bottom: 6px; }
+        .referral-details p { color: #a0aec0; font-size: 15px; }
+        .action-button-outline { background: transparent; color: var(--white); border: 2px solid var(--green-ui); padding: 12px 32px; border-radius: 50px; font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer; transition: background 0.2s ease; }
+        .action-button-outline:hover { background: var(--green-ui); color: var(--dark); }
+
+        /* Skeyy Cares UI Elements */
+        .cares-bg-panel { background: var(--white); padding: 60px 0; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; margin-bottom: 48px; }
+        .cares-header-text { text-align: center; margin-bottom: 32px; }
+        .cares-header-text h3 { font-size: 26px; font-weight: 800; }
+        .cares-header-text .highlight-red { color: var(--pink-ui); }
+        .security-warning-strip { background: #fff5f5; border-left: 4px solid #ff4d4d; padding: 14px 20px; font-size: 13px; font-weight: 600; color: #d93838; border-radius: 6px; max-width: 800px; margin: 16px auto 32px; text-align: center; }
+        .cares-layout-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .cares-metric-card { background: var(--light-grey); padding: 28px; border-radius: var(--card-radius); text-align: center; font-weight: 700; font-size: 13px; text-transform: uppercase; }
+        .cares-metric-card i { display: block; font-size: 28px; color: var(--green-ui); margin-bottom: 12px; }
+
+        /* About & Editorial Layout */
+        .editorial-wrapper-card { background: var(--white); padding: 40px; border-radius: var(--bento-radius); box-shadow: 0 4px 20px rgba(0,0,0,0.02); margin-bottom: 60px; }
+        .editorial-wrapper-card h2 { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
+        .editorial-copy-container { font-size: 15px; color: var(--muted); line-height: 1.65; }
+        .editorial-copy-container p { margin-bottom: 12px; }
+
+        /* Structured Corporate Footer Elements */
+        .corporate-footer { background: var(--dark); color: var(--white); padding: 64px 0 24px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-grid-layout { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 48px; }
+        .footer-brand-summary h4 { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .footer-brand-summary p { color: #a0aec0; font-size: 14px; max-width: 260px; }
+        .footer-links-column h5 { font-size: 14px; text-transform: uppercase; color: var(--white); margin-bottom: 16px; font-weight: 700; }
+        .footer-links-column ul { list-style: none; }
+        .footer-links-column ul li { margin-bottom: 10px; }
+        .footer-links-column ul li a { color: #a0aec0; font-size: 14px; text-decoration: none; transition: color 0.2s ease; }
+        .footer-links-column ul li a:hover { color: var(--green-ui); }
+        .footer-contact-block p { font-size: 14px; color: #a0aec0; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .footer-contact-block p i { color: var(--green-ui); }
+        .footer-copyright-line { display: flex; justify-content: space-between; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 13px; color: #718096; }
+
+        /* Complete Grid Fallback for Mobile Devices */
+        @media (max-width: 1024px) {
+            .footer-grid-layout { grid-template-columns: repeat(2, 1fr); }
+            .grid-bento-mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+            .grid-bento-cell.col-double { grid-column: span 1; }
+        }
+        @media (max-width: 768px) {
+            .nav-menu-links, .search-pod { display: none; }
+            .grid-bento-mosaic { grid-template-columns: 1fr; grid-auto-rows: 220px; }
+            .grid-bento-cell.row-double { grid-row: span 1; }
+            .hero-display-box { height: 340px; }
+            .hero-text-aligner { padding: 0 24px; }
+            .hero-panel-content h1 { font-size: 32px; }
+            .referral-container-box { flex-direction: column; text-align: center; padding: 32px 20px; }
+            .cares-layout-grid { grid-template-columns: 1fr; }
+            .footer-grid-layout { grid-template-columns: 1fr; }
+            .footer-copyright-line { flex-direction: column; gap: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-banner">
+        All PREMIUM DENIMS are 50% off! <a href="#">Shop Collection</a>
+    </div>
+
+    <nav class="navbar-sticky">
+        <div class="layout-container nav-flex">
+            <a href="index.html" class="brand-frame">
+                <img src="img/skey_logo.jpg" alt="Skeyy Brand Identification Asset" class="brand-img" onerror="this.src='https://via.placeholder.com/140x44?text=Skeyy+Brand'">
+                <span class="brand-text">Skeyy</span>
+            </a>
+            
+            <ul class="nav-menu-links">
+                <li><a href="#">Men Collection</a></li>
+                <li><a href="#">Women Space</a></li>
+                <li><a href="#">Kids Wear</a></li>
+                <li><a href="#">Beauty Hub</a></li>
+            </ul>
+
+            <div class="nav-flex" style="gap: 20px;">
+                <div class="search-pod">
+                    <i class="fas fa-search" style="color: var(--muted);"></i>
+                    <input type="text" placeholder="Search categories...">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="layout-container">
+        <div class="hero-jumbotron">
+            <div class="hero-display-box">
+                <img src="img/carousel-1.jpg" alt="Skeyy Storefront Launch View" class="hero-image-fallback" onerror="this.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=cover'">
+                <div class="hero-dark-layer"></div>
+                <div class="hero-text-aligner">
+                    <div class="hero-panel-content">
+                        <h1>Handpicked Style.<br>Direct To Curated Stores.</h1>
+                        <p>Launch faster, operate with premium low commission architectures.</p>
+                        <a href="#" class="action-button-solid">Explore All Lines</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="layout-container">
+        <section style="padding: 24px 0;">
+            <h2 class="grid-header-title">Shop By Category</h2>
+            <div class="grid-bento-mosaic">
+                <a href="#" class="grid-bento-cell row-double col-double">
+                    <img src="img/cat-ethnic.jpg" alt="Ethnic Showcase" onerror="this.src='https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=800&auto=format&fit=cover'">
+                    <div class="cell-gradient-shroud">
+                        <div class="cell-labels">
+                            <h3>Ethnic Wear</h3>
+                            <span>50% - 80% Live Discount</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="grid-bento-cell row-double">
+                    <img src="img/cat-shoes.jpg" alt="Casual Footwear Sourcing" onerror="this.src='https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=cover'">
+                    <div class="cell-gradient-shroud">
+                        <div class="cell-labels">
+                            <h3>Casual Shoes</h3>
+                            <span>Trending Collection</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="grid-bento-cell">
+                    <img src="img/cat-watch.jpg" alt="Luxury Timepieces Sourcing" onerror="this.src='https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=800&auto=format&fit=cover'">
+                    <div class="cell-gradient-shroud">
+                        <div class="cell-labels">
+                            <h3>Watches</h3>
+                            <span>Premium Tier</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="grid-bento-cell">
+                    <img src="img/cat-beauty.jpg" alt="Cosmetics Organic Care" onerror="this.src='https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=800&auto=format&fit=cover'">
+                    <div class="cell-gradient-shroud">
+                        <div class="cell-labels">
+                            <h3>Beauty Ecosystem</h3>
+                            <span>Handpicked Sourcing</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="referral-container-box">
+            <div class="referral-details">
+                <h2>Refer Friends Component</h2>
+                <p>Refer up to nine merchants to scale your profit baseline structure and gain 100 system value points instantly.</p>
+            </div>
+            <div>
+                <button class="action-button-outline">Start Referring Hub</button>
+            </div>
+        </section>
+    </main>
+
+    <section class="cares-bg-panel">
+        <div class="layout-container">
+            <div class="cares-header-text">
+                <h3>Skeyy <span class="highlight-red">CARES</span></h3>
+                <div class="security-warning-strip">
+                    <i class="fas fa-shield-alt" style="margin-right: 6px;"></i> SECURITY NOTICE: VERBAL OR TELEPHONIC REQUESTS FOR BANK PASSWORDS OR CREDIT CHANNELS ARE STRICTLY RESTRICTED.
+                </div>
+            </div>
+            <div class="cares-layout-grid">
+                <div class="cares-metric-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Easy Exchange Window</span>
+                </div>
+                <div class="cares-metric-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <span>100% Handpicked Sourcing</span>
+                </div>
+                <div class="cares-metric-card">
+                    <i class="fas fa-award"></i>
+                    <span>Assured QA Protocols</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="layout-container">
+        <article class="editorial-wrapper-card">
+            <h2>About Skeyy Architecture</h2>
+            <div class="editorial-copy-container">
+                <p>Skeyy is a modern eCommerce platform designed to help vendors launch and grow their online stores with ease. Unlike traditional marketplaces, Skeyy offers lower commission percentages, making it more profitable for sellers to run their business online.</p>
+                <p>Our platform is simple, user-friendly, and built for efficiency. Vendors can easily add, update, edit, or delete products, manage orders, direct messages, stock, inventory, returns, and exchanges—all from a single, powerful dashboard.</p>
+                <p>Skeyy stands out by rewarding early growth and partnerships. When a vendor joins Skeyy and refers other vendors to the platform, they unlock special benefits, including commission percentage rewards. This referral advantage applies to the first nine vendors who join through them, giving early partners an exclusive opportunity to earn more while helping the community grow.</p>
+            </div>
+        </article>
+    </section>
+
+    <footer class="corporate-footer">
+        <div class="layout-container">
+            <div class="footer-grid-layout">
+                <div class="footer-brand-summary">
+                    <h4>Skeyy</h4>
+                    <p>Building secure architectural front-ends for modern marketplace stores.</p>
+                </div>
+                <div class="footer-links-column">
+                    <h5>Ecosystem</h5>
+                    <ul>
+                        <li><a href="#">About Skeyy Matrix</a></li>
+                        <li><a href="#">Track Realtime Orders</a></li>
+                        <li><a href="#">Logistics Returns Engine</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h5>Governance</h5>
+                    <ul>
+                        <li><a href="#">Privacy Security Ledger</a></li>
+                        <li><a href="#">Terms of System Service</a></li>
+                        <li><a href="#">Merchant Refund Matrix</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-column">
+                    <h5>Operations Base</h5>
+                    <div class="footer-contact-block">
+                        <p><i class="fab fa-whatsapp"></i> Support: +91 94814 29229</p>
+                        <p><i class="far fa-clock"></i> 10:00 AM - 17:00 PM IST</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright-line">
+                <span>&copy; 2026 Skeyy Platform Ecosystem. All Rights Preserved.</span>
+                <span>Designed via Front-End Engineering Systems</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

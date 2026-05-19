@@ -1,0 +1,70 @@
+:root {
+    --primary: #121212;
+    --accent: #00d084; /* Professional Green from your screenshots */
+    --accent-pink: #ff3e6c;
+    --bg: #f8f9fa;
+    --white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.9);
+    --shadow: 0 8px 30px rgba(0,0,0,0.06);
+    --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--primary); line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* Announcement Bar */
+.announcement-bar { background: var(--primary); color: #fff; text-align: center; padding: 8px 0; font-size: 13px; }
+.announcement-bar a { color: var(--accent); font-weight: 700; text-decoration: none; }
+
+/* Navbar */
+.main-nav { position: sticky; top: 0; z-index: 1000; background: var(--glass); backdrop-filter: blur(10px); border-bottom: 1px solid #eee; transition: 0.3s; }
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 75px; }
+.nav-links { display: flex; list-style: none; gap: 25px; }
+.nav-links a { text-decoration: none; color: var(--primary); font-weight: 600; font-size: 15px; }
+
+/* Mega Menu */
+.mega-menu { position: absolute; top: 75px; left: 0; width: 100%; background: #fff; padding: 40px 0; display: none; box-shadow: var(--shadow); border-bottom: 3px solid var(--accent); }
+.has-mega:hover .mega-menu { display: block; }
+.mega-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.mega-col h4 { margin-bottom: 15px; font-size: 14px; text-transform: uppercase; color: var(--accent); }
+.mega-col a { display: block; padding: 5px 0; color: #555; font-weight: 400; font-size: 14px; }
+
+/* Bento Grid Categories */
+.section { padding: 50px 0; }
+.section-title { font-size: 22px; font-weight: 800; margin-bottom: 25px; position: relative; }
+.underline::after { content: ''; display: block; width: 50px; height: 4px; background: var(--accent); margin-top: 5px; }
+
+.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 240px; gap: 15px; }
+.bento-item { position: relative; border-radius: var(--radius); overflow: hidden; background: #eee; }
+.bento-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.bento-item:hover img { transform: scale(1.1); }
+.bento-item.tall { grid-row: span 2; }
+.bento-item.wide { grid-column: span 2; }
+.bento-overlay { position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; }
+.bento-overlay span { font-size: 12px; font-weight: 700; color: var(--accent-pink); background: #fff; padding: 2px 8px; border-radius: 4px; }
+
+/* Referral & Trust Section */
+.referral-card { background: var(--primary); color: white; padding: 50px; border-radius: 25px; text-align: center; }
+.btn-outline { display: inline-block; margin-top: 15px; border: 2px solid var(--accent); color: var(--accent); padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 800; transition: 0.3s; }
+.btn-outline:hover { background: var(--accent); color: #fff; }
+
+.trust-container { background: #fff; padding: 60px 0; border-top: 1px solid #eee; margin-top: 50px; }
+.alert-box { background: #fff5f5; border-left: 5px solid #ff4d4d; padding: 20px; margin-bottom: 30px; font-size: 13px; font-weight: 700; }
+.trust-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+.trust-item i { display: block; font-size: 32px; color: var(--accent); margin-bottom: 10px; }
+.trust-item span { font-weight: 800; font-size: 12px; }
+
+/* Footer */
+.footer { background: #fff; padding: 60px 0 20px; border-top: 1px solid #eee; margin-top: 50px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 30px; }
+.footer-col h4 { margin-bottom: 15px; font-size: 14px; text-transform: uppercase; }
+.footer-col a { display: block; text-decoration: none; color: #666; margin-bottom: 8px; font-size: 14px; }
+.footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #eee; margin-top: 30px; font-weight: 700; font-size: 13px; }
+
+@media (max-width: 768px) {
+    .nav-links, .search-bar { display: none; }
+    .bento-grid { grid-template-columns: repeat(2, 1fr); }
+    .trust-features { grid-template-columns: 1fr; gap: 30px; }
+    .footer-grid { grid-template-columns: 1fr; }
+}
